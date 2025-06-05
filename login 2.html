@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Springs - Login & Signup </title>
+<style>
+  :root {
+    --primary-green: #a8d5ba;
+    --secondary-green: #6ba583;
+    --cream: #f6f4e6;
+    --dark-green: #3e6651;
+    --soft-pink: #f7cac9;
+    --text-color: #3e3e3e;
+    --shadow-color: rgba(0, 0, 0, 0.18);
+  }
+  /* Global reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%; width: 100%;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--cream);
+  }
+  
+  /* Video Background */
+  #video-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -10;
+  }
+  
+  /* Overlay to dim background for form readability */
+  #overlay-dim {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 30, 20, 0.6);
+    z-index: -5;
+  }
+
+  /* Container for login/signup */
+  #container {
+    position: relative;
+    max-width: 440px;
+    margin: 5vh auto 0 auto;
+    background: rgba(246, 249, 247, 0.9);
+    border-radius: 28px;
+    box-shadow: 0 14px 40px var(--shadow-color);
+    padding: 2.4rem 3rem 3rem;
+    color: var(--dark-green);
+    user-select: none;
+    z-index: 10;
+  }
+  /* Brand heading */
+  #container h1 {
+    font-family: 'Georgia', serif;
+    font-weight: 900;
+    font-size: 3.4rem;
+    letter-spacing: 6px;
+    margin-bottom: 2.2rem;
+    text-align: center;
+    user-select: text;
+    color: var(--secondary-green);
+    text-shadow: 0 0 5px rgba(102,173,104,0.8);
+  }
+  /* Tab controls */
+  .tab-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 2.5rem;
+  }
+  .tab-buttons button {
+    background: transparent;
+    border: 3.2px solid var(--primary-green);
+    padding: 12px 38px;
+    border-radius: 35px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--secondary-green);
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    user-select: none;
+    box-shadow: 0 0 0 transparent;
+  }
+  .tab-buttons button[aria-selected="true"] {
+    background: var(--secondary-green);
+    color: var(--cream);
+    box-shadow: 0 0 15px var(--secondary-green);
+  }
+  .tab-buttons button:focus-visible {
+    outline-offset: 6px;
+  }
+  /* Forms */
+  form {
+    color: var(--dark-green);
+  }
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  legend {
+    font-weight: 800;
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+    user-select: none;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 9px;
+    font-size: 1.1rem;
+    user-select: none;
+  }
+  input {
+    width: 100%;
+    padding: 15px 22px;
+    margin-bottom: 1.7rem;
+    font-size: 1.15rem;
+    border: 3.2px solid var(--primary-green);
+    border-radius: 30px;
+    font-family: inherit;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: var(--dark-green);
+    user-select: text;
+  }
+  input::placeholder {
+    font-style: italic;
+    color: rgba(60, 90, 60, 0.7);
+  }
+  input:focus {
+    border-color: var(--secondary-green);
+    outline: none;
+    box-shadow: 0 0 14px var(--secondary-green);
+  }
+  button[type="submit"] {
+    width: 100%;
+    padding: 17px 0;
+    font-weight: 900;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 34px;
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    color: var(--cream);
+    box-shadow: 0 11px 22px rgba(82, 155, 102, 0.95);
+    cursor: pointer;
+    transition: background-color 0.4s ease, transform 0.2s ease;
+    user-select: none;
+  }
+  button[type="submit"]:hover,
+  button[type="submit"]:focus-visible {
+    background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+    outline-offset: 6px;
+    transform: scale(1.09);
+  }
+  button[type="submit"]:active {
+    transform: scale(0.95);
+  }
+  /* Tab panels */
+  .tab-panel {
+    display: none;
+    animation: fadeUpIn 0.6s ease forwards;
+  }
+  .tab-panel.active {
+    display: block;
+  }
+  @keyframes fadeUpIn {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+  /* Responsive */
+  @media (max-width: 500px) {
+    #container {
+      max-width: 94vw;
+      padding: 2rem 1.4rem 2.8rem;
+    }
+    .tab-buttons button {
+      font-size: 1.15rem;
+      padding: 11px 28px;
+    }
+    input {
+      font-size: 1rem;
+      padding: 13px 16px;
+      margin-bottom: 1.4rem;
+    }
+    button[type="submit"] {
+      font-size: 1.2rem;
+      padding: 14px 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- Video Background -->
+<video autoplay muted loop playsinline id="video-background">
+  <source src="video/ocean.mp4" type="video/mp4">
+</video>
+
+<div id="overlay-dim"></div>
+
+<div id="container" role="main" aria-label="Springs login and signup form">
+  <h1>Springs</h1>
+  <div class="tab-buttons" role="tablist" aria-label="Login and Sign Up tabs">
+    <button role="tab" aria-selected="true" tabindex="0" id="tab-login" aria-controls="form-login">Login</button>
+    <button role="tab" aria-selected="false" tabindex="-1" id="tab-signup" aria-controls="form-signup">Sign Up</button>
+  </div>
+  <form id="form-login" class="tab-panel active" role="tabpanel" aria-labelledby="tab-login" tabindex="0" novalidate>
+    <fieldset>
+      <legend>Login to your account</legend>
+      <label for="login-username">Email or Username</label>
+      <input type="text" id="login-username" autocomplete="username" placeholder="Enter your email or username" required />
+      <label for="login-password">Password</label>
+      <input type="password" id="login-password" autocomplete="current-password" placeholder="Enter your password" required minlength="4" />
+      <button type="submit" aria-label="Login to Springs">Login</button>
+    </fieldset>
+  </form>
+  <form id="form-signup" class="tab-panel" role="tabpanel" aria-labelledby="tab-signup" tabindex="0" novalidate>
+    <fieldset>
+      <legend>Create a new account</legend>
+      <label for="signup-name">Full Name</label>
+      <input type="text" id="signup-name" placeholder="Full name" required minlength="3" autocomplete="name" />
+      <label for="signup-age">Age</label>
+      <input type="number" id="signup-age" placeholder="Age" min="10" max="120" required />
+      <label for="signup-phone">Phone Number</label>
+      <input type="tel" id="signup-phone" placeholder="+91 9876543210" pattern="\\+?[0-9\\s\\-]{7,15}" autocomplete="tel" required minlength="10" />
+      <label for="signup-password">Password</label>
+      <input type="password" id="signup-password" placeholder="Create a password" required minlength="6" />
+      <button type="submit" aria-label="Sign up for Springs">Sign Up</button>
+    </fieldset>
+  </form>
+</div>
+
+<script>
+  (() => {
+    const tabs = document.querySelectorAll('.tab-buttons button[role="tab"]');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function switchTab(newTab) {
+      tabs.forEach(tab => {
+        const select = tab === newTab;
+        tab.setAttribute('aria-selected', select);
+        tab.tabIndex = select ? 0 : -1;
+      });
+      panels.forEach(panel => {
+        panel.classList.toggle('active', panel.id === newTab.getAttribute('aria-controls'));
+      });
+      panels.forEach(panel => {
+        if (panel.classList.contains('active')) panel.focus();
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', e => switchTab(e.currentTarget));
+      tab.addEventListener('keydown', e => {
+        const idx = [...tabs].indexOf(e.currentTarget);
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          const next = tabs[(idx + 1) % tabs.length];
+          next.focus();
+          switchTab(next);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+          prev.focus();
+          switchTab(prev);
+        }
+      });
+    });
+
+    const formLogin = document.getElementById('form-login');
+    const formSignup = document.getElementById('form-signup');
+
+    formLogin.addEventListener('submit', e => {
+      e.preventDefault();
+      const username = formLogin['login-username'].value.trim();
+      const password = formLogin['login-password'].value;
+      if(username && password.length >= 4) {
+        alert(`Login successful! Welcome, ${username}!`);
+        formLogin.reset();
+        // Redirect to products page (adjust filename as needed)
+        window.location.href = "Main page.html";
+      } else {
+        alert('Please enter a username/email and a password of at least 4 characters.');
+      }
+    });
+
+    formSignup.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = formSignup['signup-name'].value.trim();
+      const age = parseInt(formSignup['signup-age'].value, 10);
+      const phone = formSignup['signup-phone'].value.trim();
+      const password = formSignup['signup-password'].value;
+      const phonePattern = /^\+?[0-9\s\-]{7,15}$/;
+      if(name.length >= 3 && Number.isInteger(age) && age >= 10 && age <= 120 &&
+        phonePattern.test(phone) && password.length >= 6) {
+        alert(`Signup successful! Welcome, ${name}!`);
+        formSignup.reset();
+        switchTab(tabs[0]);
+      } else {
+        alert('Please complete all fields properly:\n- Name min 3 characters\n- Age 10-120\n- Phone: 7-15 digits\n- Password min 6 characters');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

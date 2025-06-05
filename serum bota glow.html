@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Springs - Botanical Glow Serum</title>
+<style>
+  :root {
+    --primary-green: #a8d5ba;
+    --secondary-green: #6ba583;
+    --cream: #f6f4e6;
+    --dark-green: #3e6651;
+    --soft-pink: #f7cac9;
+    --text-color: #3e3e3e;
+    --shadow: rgba(0, 0, 0, 0.15);
+  }
+  /* Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-green);
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  /* Video Background */
+  #video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -10;
+  }
+  /* Overlay to soften background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgba(246, 244, 230, 0.596);
+    z-index: -1;
+  }
+  header {
+    background: var(--primary-green);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 3px 8px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-radius: 0 0 20px 20px;
+    user-select: none;
+  }
+  header h1 {
+    font-family: 'Georgia', serif;
+    color: var(--dark-green);
+    font-weight: 900;
+    font-size: 2.8rem;
+    margin: 0;
+    letter-spacing: 3.5px;
+  }
+  main {
+    max-width: 900px;
+    margin: 2.5rem auto 5rem;
+    background: var(--cream);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px var(--shadow);
+    padding: 2.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-section {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .product-image {
+    flex-shrink: 0;
+    max-width: 360px;
+    border-radius: 24px;
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.12);
+    animation: fadeInMoveLeft 1s ease forwards;
+  }
+  .details {
+    flex: 1;
+    min-width: 280px;
+    animation: fadeInMoveRight 1.5s ease forwards;
+  }
+  .details h2 {
+    font-family: 'Georgia', serif;
+    color: var(--dark-green);
+    font-weight: 900;
+    font-size: 2.3rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--dark-green);
+    border-left: 6px solid var(--secondary-green);
+    padding-left: 12px;
+    margin-top: 1.6rem;
+    margin-bottom: 0.6rem;
+    user-select: none;
+  }
+  ul {
+    padding-left: 1.5rem;
+    margin-top: 0;
+  }
+  li {
+    margin-bottom: 0.6rem;
+    font-size: 1.05rem;
+    user-select: text;
+  }
+  button.add-to-cart,
+  button.back-main {
+    margin-top: 2rem;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 34px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    user-select: none;
+    border: none;
+    box-shadow: 0 6px 12px rgba(82, 149, 101, 0.5);
+  }
+  button.add-to-cart {
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    color: var(--cream);
+  }
+  button.back-main {
+    background: var(--soft-pink);
+    color: var(--dark-green);
+    box-shadow: 0 5px 12px rgba(247, 202, 201, 0.7);
+  }
+  button.add-to-cart:hover,
+  button.add-to-cart:focus-visible {
+    background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+    transform: scale(1.1);
+    outline-offset: 4px;
+  }
+  button.back-main:hover,
+  button.back-main:focus-visible {
+    background: #f9a9a8;
+    transform: scale(1.05);
+    outline-offset: 4px;
+  }
+  button.add-to-cart:active,
+  button.back-main:active {
+    transform: scale(0.96);
+  }
+  @keyframes fadeInMoveLeft {
+    from {opacity: 0; transform: translateX(-40px);}
+    to {opacity:1; transform: translateX(0);}
+  }
+  @keyframes fadeInMoveRight {
+    from {opacity: 0; transform: translateX(40px);}
+    to {opacity:1; transform: translateX(0);}
+  }
+  
+</style>
+</head>
+<body>
+
+<video autoplay muted loop playsinline id="video-background">
+  <source src="video/botanical.mp4" type="video/mp4">
+</video>
+
+<header>
+  <h1>Springs</h1>
+</header>
+
+<main>
+  <section class="product-section" aria-label="Botanical Glow Serum product details">
+    <img src="Photos/serum bota.jpeg" alt="Botanical Glow Serum bottle" class="product-image" />
+    <div class="details">
+      <h2>Botanical Glow Serum</h2>
+      <p>This illuminating serum is infused with a blend of botanical extracts to enhance your skin's natural radiance, providing hydration and a youthful glow.</p>
+      <div class="section-title">Key Ingredients</div>
+      <ul>
+        <li>Botanical Extracts - Nourish and revitalize the skin.</li>
+        <li>Vitamin C - Brightens and evens skin tone.</li>
+        <li>Hyaluronic Acid - Provides deep hydration and plumps the skin.</li>
+        <li>Aloe Vera - Soothes and hydrates the skin.</li>
+        <li>Essential Oils - Offer a calming aroma and additional skin benefits.</li>
+      </ul>
+      <div class="section-title">Benefits</div>
+      <ul>
+        <li>Enhances skin's natural glow and radiance.</li>
+        <li>Hydrates and nourishes for a healthy appearance.</li>
+        <li>Brightens and evens out skin tone.</li>
+        <li>Soothes irritation and promotes skin health.</li>
+        <li>Suitable for all skin types.</li>
+      </ul>
+      <button class="add-to-cart" data-name="Botanical Glow Serum" data-price="800" data-img="Photos/botanical_glow_serum.png">Add to Cart - ₹800</button>
+      <button class="back-main" aria-label="Return to Main Page">Back to Main Page</button>
+    </div>
+  </section>
+</main>
+
+<script>
+  (() => {
+    const cart = [];
+    const backMainBtn = document.querySelector('button.back-main');
+    const cartCountEl = document.getElementById('cart-count');
+
+    function updateCartCount() {
+      const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+      if(cartCountEl) cartCountEl.textContent = totalQty;
+    }
+
+    function addToCart(name, price, img) {
+      const index = cart.findIndex(item => item.name === name);
+      if (index > -1) {
+        cart[index].qty += 1;
+      } else {
+        cart.push({name, price, img, qty: 1});
+      }
+      updateCartCount();
+      alert(`Added "${name}" to the cart.`);
+    }
+
+    document.body.addEventListener('click', e => {
+      if(e.target.matches('.add-to-cart')) {
+        const btn = e.target;
+        const name = btn.getAttribute('data-name');
+        const price = parseInt(btn.getAttribute('data-price'), 10);
+        const img = btn.getAttribute('data-img');
+        addToCart(name, price, img);
+      }
+    });
+
+    backMainBtn.addEventListener('click', () => {
+      window.location.href = "Main page.html"; // Replace with your main page filename
+    });
+
+    updateCartCount();
+  })();
+</script>
+
+</body>
+</html>

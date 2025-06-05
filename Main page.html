@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Springs Face Care Products</title>
+<style>
+  /* Root pastel nature palette */
+  :root {
+    --primary-green: #a8d5ba;
+    --secondary-green: #6ba583;
+    --cream: #f6f4e6;
+    --dark-green: #3e6651;
+    --soft-pink: #f7cac9;
+    --text-color: #3e3e3e;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --highlight: #c9d6b7;
+    --accent-yellow: #f9e79f;
+  }
+
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--highlight) 100%);
+    color: var(--text-color);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* Header */
+  header {
+    background: var(--primary-green);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+  header h1 {
+    font-family: 'Georgia', serif;
+    font-weight: 900;
+    color: var(--dark-green);
+    margin: 0;
+    font-size: 2.4rem;
+    letter-spacing: 3px;
+    user-select: none;
+    text-shadow: 1px 1px 3px var(--highlight);
+  }
+  nav {
+    display: flex;
+    gap: 1.8rem;
+  }
+  nav a {
+    color: var(--dark-green);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 8px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    background: transparent;
+    transition: background-color 0.4s ease, color 0.35s ease;
+    user-select: none;
+  }
+  nav a:hover,
+  nav a:focus-visible {
+    background-color: var(--soft-pink);
+    color: var(--primary-green);
+    outline-offset: 3px;
+  }
+
+  /* Cart - Icon & Badge */
+  .cart-container {
+    position: relative;
+    cursor: pointer;
+    outline-offset: 4px;
+  }
+  .cart-icon {
+    width: 32px;
+    height: 32px;
+    fill: var(--dark-green);
+    transition: transform 0.4s ease;
+    filter: drop-shadow(0 0 1px var(--highlight));
+  }
+  .cart-container:hover .cart-icon,
+  .cart-container:focus-visible .cart-icon {
+    transform: scale(1.2);
+    outline: none;
+  }
+  .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--soft-pink);
+    color: var(--dark-green);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 3px 7px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--shadow);
+    user-select: none;
+  }
+
+  main {
+    max-width: 1140px;
+    margin: 2rem auto 6rem;
+    padding: 0 1rem;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-family: 'Georgia', serif;
+    font-size: 2.6rem;
+    color: var(--dark-green);
+    margin-bottom: 1rem;
+    border-left: 10px solid var(--primary-green);
+    padding-left: 15px;
+    user-select: none;
+    text-shadow: 0 1px 0 var(--cream);
+    position: relative;
+  }
+  .section-title::after {
+    content: '';
+    position: absolute;
+    height: 6px;
+    width: 40px;
+    background: var(--soft-pink);
+    bottom: 0;
+    left: 15px;
+    border-radius: 10px;
+    opacity: 0.7;
+  }
+
+  section {
+    margin-bottom: 3.5rem;
+  }
+
+  /* Description under titles */
+  .section-desc {
+    color: var(--dark-green);
+    max-width: 800px;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    user-select: text;
+    font-style: italic;
+    text-shadow: 1px 1px 4px var(--highlight);
+  }
+
+  /* Product Grid */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.1rem;
+  }
+
+  /* Individual product card */
+  .product-card {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 18px var(--shadow);
+    padding: 1rem 1rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition:
+      box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+  }
+  .product-card:hover,
+  .product-card:focus-within {
+    box-shadow: 0 12px 25px rgba(81, 147, 105, 0.45);
+    transform: translateY(-10px);
+  }
+
+  /* Product image: animated on hover */
+  .product-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 5px 9px var(--shadow);
+    margin-bottom: 1.3rem;
+    transition:
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.6s ease-in-out;
+    will-change: transform, box-shadow;
+  }
+  .product-card:hover .product-image,
+  .product-card:focus-within .product-image {
+    transform: rotate(-4deg) scale(1.1);
+    box-shadow: 0 14px 24px rgba(87, 158, 112, 0.58);
+  }
+
+  /* Product text */
+  .product-name {
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    color: var(--dark-green);
+  }
+  .product-price {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--secondary-green);
+    margin-bottom: 1.4rem;
+  }
+
+  /* Add to Cart button */
+  button.add-to-cart {
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    border: none;
+    color: var(--cream);
+    font-weight: 800;
+    padding: 0.55rem 1.4rem;
+    font-size: 1.05rem;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 8px rgba(82, 149, 101, 0.6);
+    transition:
+      background 0.4s ease,
+      transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    user-select: none;
+  }
+  button.add-to-cart:hover,
+  button.add-to-cart:focus-visible {
+    background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+    transform: scale(1.12);
+    outline-offset: 4px;
+  }
+
+  button.add-to-cart:active {
+    transform: scale(0.98);
+  }
+
+  /* Animated background shapes on page */
+  .background-leaf {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    opacity: 0.12;
+    filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.04));
+    animation: sway 12s infinite ease-in-out alternate;
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .leaf-1 {
+    top: 20vh;
+    left: 5vw;
+    animation-delay: 0s;
+  }
+  .leaf-2 {
+    top: 70vh;
+    right: 4vw;
+    animation-delay: 4s;
+    width: 140px;
+    height: 140px;
+    opacity: 0.15;
+  }
+  .leaf-3 {
+    bottom: 5vh;
+    left: 50vw;
+    animation-delay: 8s;
+    width: 80px;
+    height: 80px;
+    opacity: 0.1;
+  }
+  @keyframes sway {
+    0% { transform: rotate(0deg) translateX(0px); }
+    50% { transform: rotate(6deg) translateX(12px); }
+    100% { transform: rotate(0deg) translateX(0px); }
+  }
+
+  /* Cart Popup Area */
+  #cart-popup {
+    position: fixed;
+    top: 62px;
+    right: 24px;
+    width: 360px;
+    max-height: 520px;
+    background: white;
+    box-shadow: 0 14px 38px rgba(0,0,0,0.28);
+    border-radius: 22px;
+    overflow-y: auto;
+    padding: 1.2rem 1.6rem 2.4rem;
+    display: none;
+    flex-direction: column;
+    z-index: 60;
+  }
+  #cart-popup.show {
+    display: flex;
+    animation: fadeIn 0.35s ease forwards;
+  }
+  #cart-popup h3 {
+    margin-top: 0;
+    font-family: 'Georgia', serif;
+    color: var(--dark-green);
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1.4rem;
+    user-select: none;
+  }
+  #cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    outline: none;
+  }
+  /* Each cart item */
+  .cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--highlight);
+  }
+  .cart-item-image {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: inset 0 0 8px var(--shadow);
+  }
+  .cart-item-info {
+    flex-grow: 1;
+    margin-left: 14px;
+  }
+  .cart-item-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--secondary-green);
+    margin: 0 0 4px 0;
+    user-select: text;
+  }
+  .cart-item-price {
+    font-size: 0.9rem;
+    color: var(--dark-green);
+    user-select: none;
+  }
+  /* Remove button */
+  .cart-item-remove {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    color: var(--soft-pink);
+    font-weight: 900;
+    font-size: 1.4rem;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 10px 4px 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  .cart-item-remove:hover,
+  .cart-item-remove:focus-visible {
+    background-color: var(--soft-pink);
+    color: var(--cream);
+    outline-offset: 4px;
+  }
+  /* Quantity */
+  .cart-item-qty {
+    font-size: 0.9rem;
+    color: var(--primary-green);
+    margin-left: 6px;
+    user-select: none;
+    font-weight: 600;
+  }
+
+  /* Total & Checkout */
+  #cart-total {
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: var(--dark-green);
+    margin-top: 18px;
+    text-align: right;
+    user-select: none;
+  }
+
+  button#checkout-btn {
+    margin-top: 22px;
+    background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+    color: var(--cream);
+    padding: 14px 0;
+    border: none;
+    width: 100%;
+    font-weight: 900;
+    font-size: 1.25rem;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 8px 13px rgba(82, 149, 101, 0.7);
+    transition: background 0.35s ease;
+    user-select: none;
+  }
+  button#checkout-btn:hover,
+  button#checkout-btn:focus-visible {
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    outline-offset: 5px;
+  }
+  button#checkout-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+    box-shadow: none;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 660px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+    nav {
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      width: 100%;
+    }
+    #cart-popup {
+      width: 92vw;
+      right: 4vw;
+      top: 58px;
+      max-height: 440px;
+      padding: 1rem 1.2rem 1.7rem;
+    }
+    .product-image {
+      width: 140px;
+      height: 140px;
+      border-radius: 16px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .product-name {
+      font-size: 1rem;
+    }
+    .product-price {
+      font-size: 0.9rem;
+    }
+  }
+  #video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -10;
+  }
+  /* Overlay to soften background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgba(246, 244, 230, 0.596);
+    z-index: -1;
+  }
+  main {
+    max-width: 900px;
+    margin: 2.5rem auto 5rem;
+    background: var(--cream);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px var(--shadow);
+    padding: 2.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+  <video autoplay muted loop playsinline id="video-background">
+  <source src="video/ocean.mp4" type="video/mp4">
+</video>
+<header>
+  <h1>Springs</h1>
+  <nav aria-label="Primary navigation">
+    <a href="#facewash" tabindex="0">Facewash</a>
+    <a href="#scrub" tabindex="0">Scrub</a>
+    <a href="#serum" tabindex="0">Serum</a>
+    <a href="#masks" tabindex="0">Masks</a>
+    <a href="#tools" tabindex="0">Tools</a>
+  </nav>
+  <div class="cart-container" tabindex="0" aria-label="Shopping cart" role="button" aria-haspopup="true" aria-expanded="false" id="cart-button">
+    <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" >
+      <path d="M7 18c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-12-2l2-10h12l-1.5 7h-11z"></path>
+    </svg>
+    <span class="cart-count" id="cart-count" aria-live="polite" aria-atomic="true">0</span>
+  </div>
+</header>
+
+
+<main>
+  <section id="facewash" tabindex="-1">
+    <h2 class="section-title">Facewash</h2>
+    <p class="section-desc">Cleanse your skin gently with our range of nourishing facewashes made from natural ingredients, perfect for daily use.</p>
+    <div class="products-grid" aria-label="Facewash products">
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="fw1-name">
+        <a href="fw Refreshing aloe .html"><img class="product-image" src="Photos/aloe facewash.png" alt="Refreshing Aloe Facewash bottle" /></a>
+        <h3 class="product-name" id="fw1-name">Refreshing Aloe Facewash</h3>
+        <div class="product-price">₹350</div>
+        <button class="add-to-cart" data-name="Refreshing Aloe Facewash" data-price="350" data-img="Photos/aloe facewash.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="fw2-name">
+        <a href="fw Herbal mint .html"><img class="product-image" src="Photos/herbal mint fw.png" alt="Mint herbal facewash with peppermint" /></a>
+        <h3 class="product-name" id="fw2-name">Herbal Mint Facewash</h3>
+        <div class="product-price">₹420</div>
+        <button class="add-to-cart" data-name="Herbal Mint Facewash" data-price="420" data-img="Photos/herbal mint fw.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="fw3-name">
+        <a href="fw lotus glow.html"><img class="product-image" src="Photos/lotus fw.png" alt="Lotus Glow Facewash with lotus flower" /></a>
+        <h3 class="product-name" id="fw3-name">Lotus Glow Facewash</h3>
+        <div class="product-price">₹480</div>
+        <button class="add-to-cart" data-name="Lotus Glow Facewash" data-price="480" data-img="Photos/lotus fw.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="fw4-name">
+        <a href="fw chamomile.html"><img class="product-image" src="Photos/chamomile fw.png" alt="Facewash with calming chamomile" /></a>
+        <h3 class="product-name" id="fw4-name">Chamomile Calm Facewash</h3>
+        <div class="product-price">₹400</div>
+        <button class="add-to-cart" data-name="Chamomile Calm Facewash" data-price="400" data-img="Photos/chamomile fw.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="fw5-name">
+        <a href="fw lavender bliss.html"><img class="product-image" src="Photos/lavender fw.png" alt="Lavender scent facewash" /></a>
+        <h3 class="product-name" id="fw5-name">Lavender Bliss Facewash</h3>
+        <div class="product-price">₹460</div>
+        <button class="add-to-cart" data-name="Lavender Bliss Facewash" data-price="460" data-img="Photos/lavender fw.png">Add to Cart</button>
+      </article>
+    </div>
+  </section>
+
+  <section id="scrub" tabindex="-1">
+    <h2 class="section-title">Scrub</h2>
+    <p class="section-desc">Reveal radiant skin with our carefully crafted scrubs. Enriched with natural exfoliants to gently remove dead skin cells without irritation.</p>
+    <div class="products-grid" aria-label="Scrub products">
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="sc1-name">
+        <a href="sc walnut.html"><img class="product-image" src="Photos/sc walnut.png" alt="Gentle Walnut Scrub in a ceramic bowl" /></a>
+        <h3 class="product-name" id="sc1-name">Gentle Walnut Scrub</h3>
+        <div class="product-price">₹450</div>
+        <button class="add-to-cart" data-name="Gentle Walnut Scrub" data-price="450" data-img="Photos/sc walnut.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="sc2-name">
+        <a href="sc herbal sugar.html"><img class="product-image" src="Photos/sc sugar .png" alt="Herbal sugar scrub in jar" /></a>
+        <h3 class="product-name" id="sc2-name">Herbal Sugar Scrub</h3>
+        <div class="product-price">₹310</div>
+        <button class="add-to-cart" data-name="Herbal Sugar Scrub" data-price="310" data-img="Photos/sc sugar .png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="sc3-name">
+        <a href="sc org coffee.html"><img class="product-image" src="Photos/sc coffee.png" alt="Organic coffee scrub with coffee beans" /></a>
+        <h3 class="product-name" id="sc3-name">Organic Coffee Scrub</h3>
+        <div class="product-price">₹550</div>
+        <button class="add-to-cart" data-name="Organic Coffee Scrub" data-price="550" data-img="Photos/sc coffee.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="sc4-name">
+        <a href="sc sea salt.html"><img class="product-image" src="Photos/sc salt.png" alt="Natural salt scrub crystals" /></a>
+        <h3 class="product-name" id="sc4-name">Sea Salt Glow Scrub</h3>
+        <div class="product-price">₹480</div>
+        <button class="add-to-cart" data-name="Sea Salt Glow Scrub" data-price="480" data-img="Photos/sc salt.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="sc5-name">
+        <a href="sc exotic nature.html"><img class="product-image" src="Photos/sc natu ing.jpeg" alt="Scrub jar with natural ingredients" /></a>
+        <h3 class="product-name" id="sc5-name">Exotic Nature Scrub</h3>
+        <div class="product-price">₹520</div>
+        <button class="add-to-cart" data-name="Exotic Nature Scrub" data-price="520" data-img="Photos/sc natu ing.jpeg">Add to Cart</button>
+      </article>
+    </div>
+  </section>
+
+  <section id="serum" tabindex="-1">
+    <h2 class="section-title">Serum</h2>
+    <p class="section-desc">Boost your skin's natural glow with nutrient-rich serums tailor-made to nourish, hydrate, and rejuvenate your face.</p>
+    <div class="products-grid" aria-label="Serum products">
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="se1-name">
+        <a href="serum vita c.html"><img class="product-image" src="Photos/serum vitamin c.jpeg" alt="Vitamin C face serum with dropper" /></a>
+        <h3 class="product-name" id="se1-name">Vitamin C Radiance Serum</h3>
+        <div class="product-price">₹1200</div>
+        <button class="add-to-cart" data-name="Vitamin C Radiance Serum" data-price="1200" data-img="Photos/serum vitamin c.jpeg">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="se2-name">
+        <a href="serum hyluronic.html"><img class="product-image" src="Photos/serum hya.jpeg" alt="Hyaluronic Acid serum with pipette" /></a>
+        <h3 class="product-name" id="se2-name">Hydrating Hyaluronic Serum</h3>
+        <div class="product-price">₹1500</div>
+        <button class="add-to-cart" data-name="Hydrating Hyaluronic Serum" data-price="1500" data-img="Photos/serum hya.jpeg">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="se3-name">
+        <a href="serum bota glow.html"><img class="product-image" src="Photos/serum bota.jpeg" alt="Botanical glow serum in glass bottle" /></a>
+        <h3 class="product-name" id="se3-name">Botanical Glow Serum</h3>
+        <div class="product-price">₹1000</div>
+        <button class="add-to-cart" data-name="Botanical Glow Serum" data-price="1000" data-img="Photos/serum bota.jpeg">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="se4-name">
+        <a href="serum rosehip.html"><img class="product-image" src="Photos/serum rosehip.jpeg" alt="Serum bottle with natural flowers" /></a>
+        <h3 class="product-name" id="se4-name">Rosehip Regeneration Serum</h3>
+        <div class="product-price">₹1350</div>
+        <button class="add-to-cart" data-name="Rosehip Regeneration Serum" data-price="1350" data-img="Photos/serum rosehip.jpeg">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="se5-name">
+        <a href="serum milk.html"><img class="product-image" src="Photos/serum milk.png" alt="Serum bottle with milk drops" /></a>
+        <h3 class="product-name" id="se5-name">Milk Drops Face Serum</h3>
+        <div class="product-price">₹1420</div>
+        <button class="add-to-cart" data-name="Milk Drops Face Serum" data-price="1420" data-img="Photos/serum milk.png">Add to Cart</button>
+      </article>
+    </div>
+  </section>
+
+  <section id="masks" tabindex="-1">
+    <h2 class="section-title">Masks</h2>
+    <p class="section-desc">Detoxify, hydrate and refresh your skin with our variety of masks crafted from natural and potent ingredients.</p>
+    <div class="products-grid" aria-label="Mask products">
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="mk1-name">
+        <a href="mask clay.html"><img class="product-image" src="Photos/mask natu clay.png" alt="Natural green clay face mask" /></a>
+        <h3 class="product-name" id="mk1-name">Natural Clay Mask</h3>
+        <div class="product-price">₹500</div>
+        <button class="add-to-cart" data-name="Natural Clay Mask" data-price="500" data-img="Photos/mask natu clay.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="mk2-name">
+        <a href="mask hydra sheet.html"><img class="product-image" src="Photos/mask hydra sheet.png" alt="Hydrating sheet mask on mannequin face" /></a>
+        <h3 class="product-name" id="mk2-name">Hydrating Sheet Mask</h3>
+        <div class="product-price">₹550</div>
+        <button class="add-to-cart" data-name="Hydrating Sheet Mask" data-price="550" data-img="Photos/mask hydra sheet.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="mk3-name">
+        <a href="mask herb detox.html"><img class="product-image" src="Photos/mask herb detox.png" alt="Herbal detox face mask with spoon" /></a>
+        <h3 class="product-name" id="mk3-name">Herbal Detox Mask</h3>
+        <div class="product-price">₹550</div>
+        <button class="add-to-cart" data-name="Herbal Detox Mask" data-price="550" data-img="Photos/mask herb detox.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="mk4-name">
+        <a href="mask aloe.html"><img class="product-image" src="Photos/mask aloe.png" alt="Man applying a soothing facial mask" /></a>
+        <h3 class="product-name" id="mk4-name">Soothing Aloe Mask</h3>
+        <div class="product-price">₹480</div>
+        <button class="add-to-cart" data-name="Soothing Aloe Mask" data-price="480" data-img="Photos/mask aloe.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="mk5-name">
+        <a href="mask rose.html"><img class="product-image" src="Photos/mask rose.png" alt="Rose scented face mask" /></a>
+        <h3 class="product-name" id="mk5-name">Rose Petal Glow Mask</h3>
+        <div class="product-price">₹650</div>
+        <button class="add-to-cart" data-name="Rose Petal Glow Mask" data-price="650" data-img="Photos/mask rose.png">Add to Cart</button>
+      </article>
+    </div>
+  </section>
+
+  <section id="tools" tabindex="-1">
+    <h2 class="section-title">Tools</h2>
+    <p class="section-desc">Enhance your skincare routine with our selected tools designed to gently cleanse, exfoliate, and pamper your skin.</p>
+    <div class="products-grid" aria-label="Face care tools">
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="to1-name">
+        <a href="t soft brush.html"><img class="product-image" src="Photos/t soft face brush.png" alt="Soft facial brush" /></a>
+        <h3 class="product-name" id="to1-name">Soft Facial Brush</h3>
+        <div class="product-price">₹350</div>
+        <button class="add-to-cart" data-name="Soft Facial Brush" data-price="350" data-img="Photos/t soft face brush.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="to2-name">
+        <a href="t org cotton pad.html"><img class="product-image" src="Photos/t org cotton pads.png" alt="Box of organic cotton pads" /></a>
+        <h3 class="product-name" id="to2-name">Organic Cotton Pads</h3>
+        <div class="product-price">₹400</div>
+        <button class="add-to-cart" data-name="Organic Cotton Pads" data-price="400" data-img="Photos/t org cotton pads.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="to3-name">
+        <a href="t face massage.html"><img class="product-image" src="Photos/t face massage.png" alt="Facial massage tool" /></a>
+        <h3 class="product-name" id="to3-name">Facial Massage Tool</h3>
+        <div class="product-price">₹1000</div>
+        <button class="add-to-cart" data-name="Facial Massage Tool" data-price="1000" data-img="Photos/t face massage.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="to4-name">
+        <a href="t bamboo brush.html"><img class="product-image" src="Photos/t bamboo face brush.png" alt="Bamboo facial brush" /></a>
+        <h3 class="product-name" id="to4-name">Bamboo Facial Brush</h3>
+        <div class="product-price">₹450</div>
+        <button class="add-to-cart" data-name="Bamboo Facial Brush" data-price="450" data-img="Photos/t bamboo face brush.png">Add to Cart</button>
+      </article>
+      <article class="product-card" tabindex="0" role="region" aria-labelledby="to5-name">
+        <a href="t reusable.html"><img class="product-image" src="Photos/t reusable cotton rounds.png" alt="Reusable cotton rounds" /></a>
+        <h3 class="product-name" id="to5-name">Reusable Cotton Rounds</h3>
+        <div class="product-price">₹600</div>
+        <button class="add-to-cart" data-name="Reusable Cotton Rounds" data-price="600" data-img="Photos/t reusable cotton rounds.png">Add to Cart</button>
+      </article>
+    </div>
+  </section>
+</main>
+
+<div id="cart-popup" role="dialog" aria-modal="true" aria-label="Shopping cart contents">
+  <h3>Your Cart</h3>
+  <div id="cart-items" tabindex="0" aria-live="polite" aria-atomic="false">
+    <p style="text-align:center; color: var(--dark-green); font-style: italic; user-select:none;">Your cart is empty.</p>
+  </div>
+  <div id="cart-total">Total: ₹0</div>
+  <button id="checkout-btn" aria-label="Proceed to checkout" disabled>Checkout</button>
+</div>
+
+<script>
+  (() => {
+    const cart = [];
+    const cartCountEl = document.getElementById('cart-count');
+    const cartPopup = document.getElementById('cart-popup');
+    const cartButton = document.getElementById('cart-button');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    /* Update the visible cart count numeric badge */
+    function updateCartCount() {
+      cartCountEl.textContent = cart.length;
+      cartButton.setAttribute('aria-expanded', cart.length > 0 && cartPopup.classList.contains('show'));
+    }
+
+    /* Refresh cart popup content */
+    function updateCartPopup() {
+      cartItemsEl.innerHTML = '';
+      if(cart.length === 0) {
+        cartItemsEl.innerHTML = '<p style="text-align:center; color: var(--dark-green); font-style: italic; user-select:none;">Your cart is empty.</p>';
+        cartTotalEl.textContent = 'Total: ₹0';
+        checkoutBtn.disabled = true;
+        checkoutBtn.style.opacity = 0.5;
+        return;
+      }
+      checkoutBtn.disabled = false;
+      checkoutBtn.style.opacity = 1;
+
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        const itemEl = document.createElement('div');
+        itemEl.className = 'cart-item';
+        itemEl.innerHTML = `
+          <img class="cart-item-image" src="${item.img}" alt="${item.name} thumbnail" />
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div>
+              <span class="cart-item-price">₹${item.price} x ${item.qty} = ₹${item.price * item.qty}</span>
+            </div>
+          </div>
+          <button class="cart-item-remove" aria-label="Remove ${item.name} from cart" data-index="${index}">&times;</button>
+        `;
+        cartItemsEl.appendChild(itemEl);
+      });
+      cartTotalEl.textContent = 'Total: ₹' + total;
+    }
+
+    /* Add new product or update qty if already in cart */
+    function addToCart(name, price, img) {
+      // Check if item already in cart, increment qty
+      const existingIndex = cart.findIndex(i => i.name === name);
+      if (existingIndex > -1) {
+        cart[existingIndex].qty += 1;
+      } else {
+        cart.push({name, price, img, qty: 1});
+      }
+      updateCartCount();
+      updateCartPopup();
+      if (!cartPopup.classList.contains('show')) {
+        toggleCartPopup(true);
+      }
+    }
+
+    /* Remove item from cart by index */
+    function removeFromCart(index) {
+      if (index >= 0 && index < cart.length) {
+        cart.splice(index, 1);
+        updateCartCount();
+        updateCartPopup();
+      }
+    }
+
+    /* Show or hide cart popup */
+    function toggleCartPopup(show) {
+      if (show === undefined) {
+        show = !cartPopup.classList.contains('show');
+      }
+      if(show && cart.length > 0) {
+        cartPopup.classList.add('show');
+        cartButton.setAttribute('aria-expanded', 'true');
+        cartPopup.focus();
+      } else {
+        cartPopup.classList.remove('show');
+        cartButton.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    /* Event delegation for add to cart and remove from cart */
+    document.body.addEventListener('click', (e) => {
+      if(e.target.matches('.add-to-cart')) {
+        const btn = e.target;
+        const name = btn.getAttribute('data-name');
+        const price = parseInt(btn.getAttribute('data-price'), 10);
+        const img = btn.getAttribute('data-img');
+        addToCart(name, price, img);
+      }
+      if(e.target.matches('.cart-item-remove')) {
+        const index = parseInt(e.target.getAttribute('data-index'), 10);
+        removeFromCart(index);
+      }
+    });
+
+    /* Toggle cart popup when cart icon clicked */
+    cartButton.addEventListener('click', () => {
+      toggleCartPopup();
+    });
+    cartButton.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCartPopup();
+      }
+    });
+
+    /* Close cart popup when clicking outside */
+    document.addEventListener('click', (e) => {
+      if (!cartPopup.contains(e.target) && !cartButton.contains(e.target)) {
+        toggleCartPopup(false);
+      }
+    });
+
+    /* Checkout button mock */
+    checkoutBtn.addEventListener('click', () => {
+      alert('Thank you for your purchase! This is a local demo project. No real transactions are processed.');
+      // Clear cart after checkout
+      cart.length = 0;
+      updateCartCount();
+      updateCartPopup();
+      toggleCartPopup(false);
+    });
+  })();
+</script>
+</body>
+</html>
+
